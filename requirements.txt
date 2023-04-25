@@ -1,0 +1,9 @@
+django
+django-dotenv
+django-environ
+psycopg2-binary
+gunicorn
+whitenoise
+requests
+black
+django-crispy-forms
