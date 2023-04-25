@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}
+NPC Names
+{% endblock %}
+{% block content %}
+
+
+
+
+<table class="table table-striped">
+    {% for anc, name in names_dict.items %}
+    <tr>
+        <th>{{anc}}</th>
+        <td>{{name}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th>Randomly assembled name</th>
+        <td>{{gen_name}}</td>
+    </tr>
+
+</table>
+{% endblock %}

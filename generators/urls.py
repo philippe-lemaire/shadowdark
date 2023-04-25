@@ -5,5 +5,5 @@ from . import views
 app_name = "generators"
 
 urlpatterns = [
-    # path("adventuring_party", views.adventuring_party_view, name="adventuring_party"),
+    path("npc_names", views.npc_name, name="npc_name"),
 ]
