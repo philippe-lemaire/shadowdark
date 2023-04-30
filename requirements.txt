@@ -7,3 +7,4 @@ whitenoise
 requests
 black
 django-crispy-forms
+crispy-bootstrap4

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block title %}
+PC Stats
+{% endblock %}
+{% block content %}
+
+
+
+
+<table class="table table-striped">
+    {% for stat_name, value in stats.items %}
+    <tr>
+        <th>{{stat_name}}</th>
+        <td>{{value}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{{form|crispy}}
+{% endblock %}
