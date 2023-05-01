@@ -1,5 +1,12 @@
 from .dice_tools import roll, get_closest_key
-from .game_facts import classes, ancestries, backgrounds, stats_names, talents_dict
+from .game_facts import (
+    classes,
+    ancestries,
+    backgrounds,
+    stats_names,
+    talents_dict,
+    ancestries_feat_dict,
+)
 import random
 
 
@@ -17,6 +24,7 @@ class PC_Character:
             setattr(self, stat_name, value)
             setattr(self, f"{stat_name}_MOD", (value - 10) // 2)
         self.ancestry = ancestries[ancestry]
+        self.ancestry_feat = ancestries_feat_dict.get(self.ancestry)
         self.background, self.background_description = backgrounds[background]
         self.class_ = classes[class_]
         # level
@@ -47,8 +55,12 @@ class PC_Character:
     def roll_talent(self):
         """Rolls a talent depending on class_"""
         talents = talents_dict.get(self.class_)
-        rolled_value = roll("2d6")
-        self.talent = get_closest_key(rolled_value, talents)
+        n_talents = 2 if self.ancestry == "Human" else 1
+        rolled_talents = []
+        for _ in range(n_talents):
+            rolled_value = roll("2d6")
+            rolled_talents.append(get_closest_key(rolled_value, talents))
+        self.talent = "<br>".join(rolled_talents)
 
     def get_stats(self):
         stats = [getattr(self, attr) for attr in stats_names]

@@ -1,5 +1,17 @@
 ancestries = ["Dwarf", "Elf", "Goblin", "Half-Orc", "Halfling", "Human"]
+
+ancestries_feat = (
+    "<b<Stout.</b> Start with +2 HP. Roll hit points per level with advantage. (Included in displayed hit points)",
+    "<b>Farsight.</b> You get a +1 bonus to attack rolls with ranged weapons or a +1 bonus to spellcasting checks.",
+    "<b>Keen Senses.</b> You can't be surprised.",
+    "<b>Mighty.</b> You have a +1 bonus to attack and damage rolls with melee weapons.",
+    "<b>Stealthy.</b> Once per day, you can become invisible for 3 rounds.",
+    "<b>Ambitious.</b> You gain one additional talent roll at 1st level. (Included below)",
+)
+ancestries_feat_dict = {anc: feat for anc, feat in zip(ancestries, ancestries_feat)}
+
 classes = ["Fighter", "Priest", "Thief", "Wizard"]
+
 backgrounds = (
     ("Urchin", "You grew up in the merciless streets of a large city"),
     ("Wanted", "There's a price on your head, but you have allies"),
@@ -23,7 +35,6 @@ backgrounds = (
     ("Chirurgeon", "You know anatomy, surgery, and first aid"),
 )
 stats_names = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
-
 
 talents = (
     # fighter
