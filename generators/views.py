@@ -23,8 +23,8 @@ def npc_name(request):
 
 
 def get_stats(request):
-    stats, total = roll_stats()
-    context = {"stats": stats, "total": total, "form": ClassChoiceForm}
+    stats, best = roll_stats()
+    context = {"stats": stats, "best": best, "form": ClassChoiceForm}
     request.session["stats_d"] = stats
     return render(request, template_name="generators/get_stats.html", context=context)
 

@@ -1,5 +1,5 @@
-from .dice_tools import roll
-from .game_facts import classes, ancestries, backgrounds, stats_names
+from .dice_tools import roll, get_closest_key
+from .game_facts import classes, ancestries, backgrounds, stats_names, talents_dict
 import random
 
 
@@ -7,7 +7,7 @@ def roll_stats():
     stats_rolled = [roll("3d6") for _ in range(6)]
 
     stats = {k: v for k, v in zip(stats_names, stats_rolled)}
-    return stats, sum(stats_rolled)
+    return stats, max(stats_rolled)
 
 
 class PC_Character:
@@ -23,6 +23,8 @@ class PC_Character:
         self.level = 1
         # hp
         self.roll_hp()
+        # talents
+        self.roll_talent()
 
     def roll_hp(self):
         if self.level == 0:
@@ -41,6 +43,12 @@ class PC_Character:
                 rolled_hp = max(1, roll(hd) + self.CON_MOD)
         print(rolled_hp)
         self.hp = rolled_hp
+
+    def roll_talent(self):
+        """Rolls a talent depending on class_"""
+        talents = talents_dict.get(self.class_)
+        rolled_value = roll("2d6")
+        self.talent = get_closest_key(rolled_value, talents)
 
     def get_stats(self):
         stats = [getattr(self, attr) for attr in stats_names]

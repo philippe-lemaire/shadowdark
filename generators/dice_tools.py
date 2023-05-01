@@ -25,3 +25,11 @@ def roll(dice, advantage=False, disadvantage=False):
     if disadvantage and not advantage:
         return min(rolls)
     return sum(rolls)
+
+
+def get_closest_key(rolled_value, d):
+    "Returns the closest value in a table based on a rolled value"
+    for key in d.keys():
+        if key >= rolled_value:
+            return d[key]
+    return None

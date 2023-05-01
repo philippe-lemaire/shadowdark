@@ -8,6 +8,7 @@ PC Stats
 
 
 
+<h2>You just rolled these stats, now deal with it</h2>
 
 <table class="table table-striped">
     {% for stat_name, value in stats.items %}
@@ -19,7 +20,16 @@ PC Stats
 
 </table>
 
-{% crispy form %}
+{% if best <= 10 %} <h2>What a shitty character you rolled.</h2>
 
+    <a href="{% url 'generators:get_stats' %}" class="btn btn-primary btn-lg active" role="button"
+        aria-pressed="true">Roll again</a>
 
-{% endblock %}
+    <br><br>
+    {% endif %}
+
+    <h2>Choose your ABC</h2>
+
+    {% crispy form %}
+
+    {% endblock %}
