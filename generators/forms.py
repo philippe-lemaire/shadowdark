@@ -5,8 +5,6 @@ from crispy_forms.layout import Submit
 
 
 class ClassChoiceForm(forms.Form):
-    class_choice_field = [(k, cl) for k, cl in zip(range(len(classes)), classes)]
-    class_ = forms.ChoiceField(choices=class_choice_field, required=True)
     ancestry_choice_field = [
         (k, cl) for k, cl in zip(range(len(ancestries)), ancestries)
     ]
@@ -16,6 +14,8 @@ class ClassChoiceForm(forms.Form):
         for k, background in zip(range(len(backgrounds)), backgrounds)
     ]
     background = forms.ChoiceField(choices=background_choice_field, required=True)
+    class_choice_field = [(k, cl) for k, cl in zip(range(len(classes)), classes)]
+    class_ = forms.ChoiceField(choices=class_choice_field, required=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
