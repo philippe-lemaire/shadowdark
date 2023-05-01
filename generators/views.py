@@ -4,7 +4,7 @@ from .npc_names import gen_npc_name, gen_npc_name_by_syllables
 from .chargen import roll_stats
 from .forms import ClassChoiceForm
 from .chargen import PC_Character
-from .game_facts import stats_names
+from .game_facts import talents_dict
 
 # Create your views here.
 
@@ -24,7 +24,7 @@ def npc_name(request):
 
 def get_stats(request):
     stats, best = roll_stats()
-    context = {"stats": stats, "best": best, "form": ClassChoiceForm}
+    context = {"stats": stats, "best": best, "form": ClassChoiceForm()}
     request.session["stats_d"] = stats
     return render(request, template_name="generators/get_stats.html", context=context)
 
@@ -39,10 +39,9 @@ def create_PC(request):
             background = int(form.cleaned_data.get("background"))
             class_ = int(form.cleaned_data.get("class_"))
             stats_d = request.session.get("stats_d")
-
             character = PC_Character(stats_d, ancestry, background, class_)
-
             stats_zip = character.get_stats()
+            talents = talents_dict.get(character.class_)
 
             return render(
                 request,
@@ -50,6 +49,7 @@ def create_PC(request):
                 context={
                     "character": character,
                     "stats_zip": stats_zip,
+                    "talents": talents,
                 },
             )
     else:

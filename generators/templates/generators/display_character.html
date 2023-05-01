@@ -28,7 +28,7 @@ Character detail
     </tr>
 
     <tr>
-        <td>Talent</td>
+        {% if character.ancestry == 'Human' %}<td>Talents</td>{% else%}<td>Talent</td> {% endif %}
         <td>{{character.talent|safe}}</td>
     </tr>
 </table>
@@ -49,5 +49,16 @@ Character detail
 
 </table>
 
-
+<table class="table table-striped">
+    <tr>
+        <th>2d6</th>
+        <th>{{character.class_}} Talents</th>
+    </tr>
+    {% for roll, talent in talents.items %}
+    <tr>
+        <td>{{roll}}</td>
+        <td>{{talent}}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
