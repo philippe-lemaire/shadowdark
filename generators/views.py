@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .npc_names import gen_npc_name, gen_npc_name_by_syllables
 from .chargen import roll_stats
 from .forms import ClassChoiceForm
+from .chargen import PC_Character
 
 # Create your views here.
 
@@ -23,4 +24,27 @@ def npc_name(request):
 def get_stats(request):
     stats, total = roll_stats()
     context = {"stats": stats, "total": total, "form": ClassChoiceForm}
+    request.session["stats_d"] = stats
     return render(request, template_name="generators/get_stats.html", context=context)
+
+
+def create_PC(request):
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = ClassChoiceForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            ancestry = int(form.cleaned_data.get("ancestry"))
+            background = int(form.cleaned_data.get("background"))
+            class_ = int(form.cleaned_data.get("class_"))
+            stats_d = request.session.get("stats_d")
+
+            character = PC_Character(stats_d, ancestry, background, class_)
+
+            return render(
+                request,
+                template_name="generators/display_character.html",
+                context={"character": character},
+            )
+    else:
+        return redirect(get_stats)
