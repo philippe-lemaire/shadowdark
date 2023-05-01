@@ -42,6 +42,11 @@ class PC_Character:
         print(rolled_hp)
         self.hp = rolled_hp
 
+    def get_stats(self):
+        stats = [getattr(self, attr) for attr in stats_names]
+        stats_mod = [getattr(self, f"{attr}_MOD") for attr in stats_names]
+        return zip(stats_names, stats, stats_mod)
+
     def __repr__(self):
         return f"""{self.background} level {self.level} {self.ancestry} {self.class_} character with {self.hp} Hit Points.\n{[f"{attr}: {getattr(self, attr)}" for attr in stats_names]}"""
 

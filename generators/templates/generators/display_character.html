@@ -4,8 +4,40 @@
 Character detail
 {% endblock %}
 {% block content %}
+<table class="table table-striped">
+    <tr>
+        <td>Class</td>
+        <td>{{character.class_}}</td>
+    </tr>
+    <tr>
+        <td>Level</td>
+        <td> {{character.level}}
+        </td>
+    </tr>
+    <tr>
+        <td>Background</td>
+        <td>{{character.background}} {{character.background_description}}</td>
+    </tr>
+    <tr>
+        <td>HP</td>
+        <td>{{character.hp}}</td>
+    </tr>
 
-{{character}}
 
+</table>
+<table class="table table-striped">
+    <tr>
+        <th>Stat</th>
+        <th>Value</th>
+        <th>MOD</th>
+    </tr>
+    {% for stat_name, value, mod in stats_zip %}
+    <tr>
+        <td>{{stat_name}}</td>
+        <td>{{value}}</td>
+        <td>{% if mod >= 0 %}+{% endif %}{{mod}}</td>
+    </tr>
 
+    {% endfor %}
+</table>
 {% endblock %}
