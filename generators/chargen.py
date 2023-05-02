@@ -30,8 +30,15 @@ class PC_Character:
         # level
         self.level = 1
         # hp
+        self.hp = 0
         self.roll_hp()
         # talents
+        self.talents = []
+        self.roll_talent()
+
+    def level_up(self):
+        self.level += 1
+        self.roll_hp()
         self.roll_talent()
 
     def roll_hp(self):
@@ -50,17 +57,17 @@ class PC_Character:
             else:
                 rolled_hp = max(1, roll(hd) + self.CON_MOD)
         print(rolled_hp)
-        self.hp = rolled_hp
+        self.hp += rolled_hp
 
     def roll_talent(self):
         """Rolls a talent depending on class_"""
         talents = talents_dict.get(self.class_)
-        n_talents = 2 if self.ancestry == "Human" else 1
+        n_talents = 2 if (self.ancestry == "Human" and self.level == 1) else 1
         rolled_talents = []
         for _ in range(n_talents):
             rolled_value = roll("2d6")
             rolled_talents.append(get_closest_key(rolled_value, talents))
-        self.talent = "<br>".join(rolled_talents)
+        self.talents.extend(rolled_talents)
 
     def get_stats(self):
         stats = [getattr(self, attr) for attr in stats_names]

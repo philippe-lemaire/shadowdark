@@ -28,8 +28,14 @@ Character detail
     </tr>
 
     <tr>
-        {% if character.ancestry == 'Human' %}<td>Talents</td>{% else%}<td>Talent</td> {% endif %}
-        <td>{{character.talent|safe}}</td>
+        <td>Talents</td>
+        <td>
+            <ul>
+                {% for talent in character.talents%}
+                <li>{{talent}}</li>
+                {% endfor %}
+            </ul>
+        </td>
     </tr>
 </table>
 <table class="table table-striped">
