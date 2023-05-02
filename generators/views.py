@@ -26,6 +26,8 @@ def get_stats(request):
     stats, best = roll_stats()
     context = {"stats": stats, "best": best, "form": ClassChoiceForm()}
     request.session["stats_d"] = stats
+    request.session["character"] = {}
+    print(f"{request.session['character']=}")
     return render(request, template_name="generators/get_stats.html", context=context)
 
 
@@ -39,9 +41,17 @@ def create_PC(request):
             background = int(form.cleaned_data.get("background"))
             class_ = int(form.cleaned_data.get("class_"))
             stats_d = request.session.get("stats_d")
-            character = PC_Character(stats_d, ancestry, background, class_)
+            character = PC_Character(
+                stats_d,
+                ancestry,
+                background,
+                class_,
+                known_talents=[],
+                first_creation=True,
+            )
             stats_zip = character.get_stats()
             talents = talents_dict.get(character.class_)
+            request.session["character"] = character.save()
 
             return render(
                 request,
@@ -54,3 +64,25 @@ def create_PC(request):
             )
     else:
         return redirect(get_stats)
+
+
+def level_up_PC(request):
+    char_values = request.session.get("character")
+
+    if not char_values:
+        return redirect(get_stats)
+    character = PC_Character(**char_values, first_creation=False)
+    character.level_up()
+    request.session["character"] = character.save()
+    stats_zip = character.get_stats()
+    talents = talents_dict.get(character.class_)
+
+    return render(
+        request,
+        template_name="generators/display_character.html",
+        context={
+            "character": character,
+            "stats_zip": stats_zip,
+            "talents": talents,
+        },
+    )

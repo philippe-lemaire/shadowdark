@@ -18,23 +18,58 @@ def roll_stats():
 
 
 class PC_Character:
-    def __init__(self, stats_d, ancestry, background, class_):
+    def __init__(
+        self,
+        stats_d,
+        ancestry,
+        background,
+        class_,
+        hp=0,
+        level=1,
+        known_talents=[],
+        first_creation=True,
+    ):
         # stats
         for stat_name, value in stats_d.items():
             setattr(self, stat_name, value)
             setattr(self, f"{stat_name}_MOD", (value - 10) // 2)
-        self.ancestry = ancestries[ancestry]
+        if isinstance(ancestry, int):
+            self.ancestry = ancestries[ancestry]
+        else:
+            self.ancestry = ancestry
+
         self.ancestry_feat = ancestries_feat_dict.get(self.ancestry)
-        self.background, self.background_description = backgrounds[background]
-        self.class_ = classes[class_]
+        if isinstance(background, int):
+            self.background, self.background_description = backgrounds[background]
+        else:
+            self.background = background
+            self.background_description = ""
+
+        if isinstance(class_, int):
+            self.class_ = classes[class_]
+        else:
+            self.class_ = class_
         # level
-        self.level = 1
+        self.level = level
         # hp
-        self.hp = 0
-        self.roll_hp()
-        # talents
-        self.talents = []
-        self.roll_talent()
+        self.hp = hp
+        self.talents = known_talents
+
+        if first_creation:
+            self.roll_hp()
+            self.roll_talent()
+
+    def save(self):
+        stats_d = {attr: getattr(self, attr) for attr in stats_names}
+        return {
+            "stats_d": stats_d,
+            "ancestry": self.ancestry,
+            "background": self.background,
+            "class_": self.class_,
+            "hp": self.hp,
+            "level": self.level,
+            "known_talents": self.talents,
+        }
 
     def level_up(self):
         self.level += 1
@@ -63,10 +98,14 @@ class PC_Character:
         """Rolls a talent depending on class_"""
         talents = talents_dict.get(self.class_)
         n_talents = 2 if (self.ancestry == "Human" and self.level == 1) else 1
+        print(f"{self.ancestry=}")
+        print(f"{self.level=}")
+        print(f"{n_talents=}")
         rolled_talents = []
         for _ in range(n_talents):
             rolled_value = roll("2d6")
             rolled_talents.append(get_closest_key(rolled_value, talents))
+        print(f"adding {rolled_talents} to character {self}")
         self.talents.extend(rolled_talents)
 
     def get_stats(self):
